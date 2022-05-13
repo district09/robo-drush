@@ -2,12 +2,14 @@
 
 use League\Container\ContainerAwareInterface;
 use League\Container\ContainerAwareTrait;
+use PHPUnit\Framework\TestCase;
+use Robo\Collection\CollectionBuilder;
 use Robo\Robo;
 use Robo\TaskAccessor;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Filesystem\Filesystem;
 
-class DrushStackTest extends \PHPUnit_Framework_TestCase implements ContainerAwareInterface
+class DrushStackTest extends TestCase implements ContainerAwareInterface
 {
     use \Boedah\Robo\Task\Drush\loadTasks;
     use TaskAccessor;
@@ -24,7 +26,7 @@ class DrushStackTest extends \PHPUnit_Framework_TestCase implements ContainerAwa
     protected $tmpDir;
 
     // Set up the Robo container so that we can create tasks in our tests.
-    public function setUp()
+    public function setUp(): void
     {
         $container = Robo::createDefaultContainer(null, new NullOutput());
         $this->setContainer($container);
@@ -37,9 +39,9 @@ class DrushStackTest extends \PHPUnit_Framework_TestCase implements ContainerAwa
     // Scaffold the collection builder
     public function collectionBuilder()
     {
-        $emptyRobofile = new \Robo\Tasks;
+        $emptyRobofile = new \Robo\Tasks();
 
-        return $this->getContainer()->get('collectionBuilder', [$emptyRobofile]);
+        return CollectionBuilder::create($this->getContainer(), $emptyRobofile);
     }
 
     public function testYesIsAssumed()
@@ -152,7 +154,7 @@ class DrushStackTest extends \PHPUnit_Framework_TestCase implements ContainerAwa
     public function testDrushStatus()
     {
         $result = $this->taskDrushStack(__DIR__ . '/../vendor/bin/drush')
-            ->printed(false)
+            ->printOutput(false)
             ->status()
             ->run();
         $this->assertTrue($result->wasSuccessful(), 'Exit code was: ' . $result->getExitCode());
@@ -232,7 +234,7 @@ class DrushStackTest extends \PHPUnit_Framework_TestCase implements ContainerAwa
     {
         exec(escapeshellcmd('composer -q ' . $command), $output, $exitCode);
         if ($exitCode !== 0) {
-            throw new \RuntimeException('Composer returned a non-zero exit code.');
+            throw new RuntimeException('Composer returned a non-zero exit code.');
         }
     }
 
