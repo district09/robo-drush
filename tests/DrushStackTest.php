@@ -153,11 +153,19 @@ class DrushStackTest extends TestCase implements ContainerAwareInterface
 
     public function testDrushStatus()
     {
-        $result = $this->taskDrushStack(__DIR__ . '/../vendor/bin/drush')
+        $cwd = getcwd();
+        $this->ensureDirectoryExistsAndClear($this->tmpDir);
+        chdir($this->tmpDir);
+        $this->writeComposerJSON();
+        $this->composer('require --no-progress --no-suggest --update-with-dependencies drush/drush drupal/core');
+
+        $result = $this->taskDrushStack($this->tmpDir . '/vendor/bin/drush')
             ->printOutput(false)
             ->status()
             ->run();
         $this->assertTrue($result->wasSuccessful(), 'Exit code was: ' . $result->getExitCode());
+
+        chdir($cwd);
     }
 
     /**
@@ -170,9 +178,6 @@ class DrushStackTest extends TestCase implements ContainerAwareInterface
     {
         if (null === $expectedVersion) {
             $expectedVersion = $composerDrushVersion;
-        }
-        if (version_compare('5.6', phpversion()) > 0 && version_compare($expectedVersion, '9.0') > 0) {
-            $this->markTestSkipped(phpversion() . ' too low for drush ' . $expectedVersion);
         }
 
         $cwd = getcwd();
@@ -196,9 +201,8 @@ class DrushStackTest extends TestCase implements ContainerAwareInterface
     public function drushVersionProvider()
     {
         return [
-            '8' => ['8.1.15'],
-            '9-rc1' => ['9.0.0-rc1', '9.0.0'],
-            '9' => ['9.4.0'],
+            '10' => ['10.6.2'],
+            //'11' => ['11.6.0'],
         ];
     }
 
