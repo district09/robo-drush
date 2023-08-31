@@ -18,9 +18,9 @@ The option -y assumed by default but can be overridden on calls to `exec()` by p
 
 This package was forked from [boedah/robo-drush](https://github.com/boedah/robo-drush). It adds the following changes:
 
-- Adds support for PHP 7.3.
-- Adds support for Drush 10.
-- Adds support for Robo 2.
+- Adds support for PHP 8.1.
+- Adds support for Drush 10, 11.
+- Adds support for Robo 3, 4.
 - Drops support for PHP 5.5, 5.6 and 7.0.
 
 ## Installation
