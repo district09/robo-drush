@@ -2,19 +2,26 @@
 
 Extension to execute Drush commands in [Robo](https://github.com/Codegyre/Robo).
 
-This package was forked from [boedah/robo-drush](https://github.com/digipolisgent/robo-drush).
-
 Runs Drush commands in stack. You can define global options for all commands (like Drupal root and uri).
 
 The option -y assumed by default but can be overridden on calls to `exec()` by passing `false` as the second parameter.
 
 ## Table of contents
 
-- [Versions](#versions)
+- [Differences with upstream](#differences-with-upstream)
 - [Installation](#installation)
 - [Testing](#testing)
 - [Usage](#usage)
 - [Examples](#examples)
+
+## Differences with upstream
+
+This package was forked from [boedah/robo-drush](https://github.com/boedah/robo-drush). It adds the following changes:
+
+- Adds support for PHP 7.3.
+- Adds support for Drush 10.
+- Adds support for Robo 2.
+- Drops support for PHP 5.5, 5.6 and 7.0.
 
 ## Installation
 
